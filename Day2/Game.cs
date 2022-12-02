@@ -25,13 +25,7 @@ namespace Day2
                 _ => throw new InvalidOperationException("No game status!")
             };
 
-            score += PlayerMove.Type switch
-            {
-                MoveType.Rock => 1,
-                MoveType.Paper => 2,
-                MoveType.Scissors => 3,
-                _ => throw new InvalidOperationException("No PlayerMove status!")
-            };
+            score += PlayerMove.Value;
 
             return score;
         }
@@ -75,14 +69,14 @@ namespace Day2
                 new Move
                 {
                      Type = MoveType.Paper,
-                    Value = 1,
+                    Value = 2,
                     Beats = MoveType.Rock,
                     LosesTo = MoveType.Scissors
                 },
                 new Move
                 {
                      Type = MoveType.Scissors,
-                     Value = 1,
+                     Value = 3,
                     Beats = MoveType.Paper,
                     LosesTo = MoveType.Rock
                 }
