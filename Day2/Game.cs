@@ -85,22 +85,9 @@ namespace Day2
 
         private GameStatus GetGameStatus()
         {
-            var opponentMoveType = OpponentMove.Type;
-            return PlayerMove.Type switch
-            {
-                MoveType.Rock => opponentMoveType == MoveType.Rock ? GameStatus.Draw :
-                        opponentMoveType == MoveType.Scissors ? GameStatus.Win :
-                        GameStatus.Loss,
-                MoveType.Paper =>
-                    opponentMoveType == MoveType.Paper ? GameStatus.Draw :
-                        opponentMoveType == MoveType.Rock ? GameStatus.Win :
-                        GameStatus.Loss,
-                MoveType.Scissors =>
-                    opponentMoveType == MoveType.Scissors ? GameStatus.Draw :
-                        opponentMoveType == MoveType.Paper ? GameStatus.Win :
-                        GameStatus.Loss,
-                _ => throw new NotImplementedException()
-            };
+            return OpponentMove.Type == PlayerMove.Beats ?
+                GameStatus.Win : OpponentMove.Type == PlayerMove.Type ?
+                    GameStatus.Draw : GameStatus.Loss;
         }
 
     }
