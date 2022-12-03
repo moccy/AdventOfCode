@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace AdventOfCode2022.Day1
+namespace Day1
 {
     internal class Program
     {
