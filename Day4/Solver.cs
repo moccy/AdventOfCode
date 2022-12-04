@@ -12,7 +12,7 @@ namespace Day4
             var counter = 0;
             foreach (var pair in pairs)
             {
-                var ranges = pair.Select(GetRange).ToArray();
+                var ranges = pair.Select(GetRange);
                 if (DoRangesFullyOverlap(ranges.First(), ranges.Last())) counter++;
             }
             return counter;
