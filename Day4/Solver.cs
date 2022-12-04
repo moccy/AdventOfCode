@@ -13,7 +13,7 @@ namespace Day4
             foreach (var pair in pairs)
             {
                 var ranges = pair.Select(GetRange).ToArray();
-                if (DoRangesFullyOverlap(ranges[0], ranges[1])) counter++;
+                if (DoRangesFullyOverlap(ranges.First(), ranges.Last())) counter++;
             }
             return counter;
         }
@@ -24,8 +24,8 @@ namespace Day4
             var counter = 0;
             foreach (var pair in pairs)
             {
-                var ranges = pair.Select(GetRange).ToArray();
-                if (DoRangesPartiallyOverlap(ranges[0], ranges[1])) counter++;
+                var ranges = pair.Select(GetRange);
+                if (DoRangesPartiallyOverlap(ranges.First(), ranges.Last())) counter++;
             }
             return counter;
         }
@@ -39,8 +39,8 @@ namespace Day4
 
         static Range GetRange(string range) 
         {
-            var split = range.Split("-").Select(int.Parse).ToArray();
-            return new Range(split[0], split[1]);
+            var split = range.Split("-").Select(int.Parse);
+            return new Range(split.First(), split.Last());
         }
     }
 }
