@@ -26,16 +26,11 @@ namespace Day4
             Console.WriteLine(partialOverlapCounter);
         }
 
-        static bool DoRangesPartiallyOverlap(int[] firstRange, int[] secondRange)
-        {
-            return firstRange[0] <= secondRange[1] && secondRange[0] <= firstRange[1];
-        }
+        static bool DoRangesPartiallyOverlap(int[] firstRange, int[] secondRange) =>
+            firstRange[0] <= secondRange[1] && secondRange[0] <= firstRange[1];
 
-        static bool DoRangesFullyOverlap(int[] firstRange, int[] secondRange)
-        {
-            if (firstRange[0] <= secondRange[0] && firstRange[1] >= secondRange[1]) return true;
-            if (secondRange[0] <= firstRange[0] && secondRange[1] >= firstRange[1]) return true;
-            return false;
-        }
+        static bool DoRangesFullyOverlap(int[] firstRange, int[] secondRange) =>
+            firstRange[0] <= secondRange[0] && firstRange[1] >= secondRange[1] ||
+            secondRange[0] <= firstRange[0] && secondRange[1] >= firstRange[1];
     }
 }
