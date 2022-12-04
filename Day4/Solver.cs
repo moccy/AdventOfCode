@@ -39,7 +39,7 @@ namespace Day4
 
         static Range GetRange(string range) 
         {
-            var split = range.Split("-").Select(x => int.Parse(x)).ToArray();
+            var split = range.Split("-").Select(int.Parse).ToArray();
             return new Range(split[0], split[1]);
         }
     }
