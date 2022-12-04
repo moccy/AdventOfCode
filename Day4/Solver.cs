@@ -6,7 +6,7 @@ namespace Day4
 {
     public class Solver
     {
-        public int SolvePart1(IEnumerable<string> lines)
+        public static int SolvePart1(IEnumerable<string> lines)
         {
             var pairs = lines.Select(x => x.Split(","));
             var counter = 0;
@@ -18,7 +18,7 @@ namespace Day4
             return counter;
         }
 
-        public int SolvePart2(IEnumerable<string> lines)
+        public static int SolvePart2(IEnumerable<string> lines)
         {
             var pairs = lines.Select(x => x.Split(","));
             var counter = 0;

@@ -8,10 +8,8 @@ namespace Day4
         static void Main(string[] args)
         {
             var lines = File.ReadLines("input.txt");
-            var solver = new Solver();
-            
-            Console.WriteLine($"Part 1: {solver.SolvePart1(lines)}");
-            Console.WriteLine($"Part 2: {solver.SolvePart2(lines)}");
+            Console.WriteLine($"Part 1: {Solver.SolvePart1(lines)}");
+            Console.WriteLine($"Part 2: {Solver.SolvePart2(lines)}");
         }
     }
 }
