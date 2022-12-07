@@ -2,7 +2,6 @@
 {
     public static class Utils
     {
-        
         public static IEnumerable<IEnumerable<T>> Transpose<T>(IEnumerable<IEnumerable<T>> matrix) {
             var enumerators = matrix.Select(e => e.GetEnumerator()).ToArray();
             try
