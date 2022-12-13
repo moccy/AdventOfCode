@@ -5,29 +5,31 @@
         static void Main(string[] args)
         {
             var trees = File.ReadLines("input.txt")
-                            .Select(x => x.Select(y => (int)char.GetNumericValue(y)).ToList())
-                            .ToList();
-            var height = trees.Count();
-            var width = trees.First().Count();
+                            .Select(x => x.Select(y => (int)char.GetNumericValue(y)).ToArray()).ToArray();
+            var height = trees.Length;
+            var width = trees[0].Length;
             var count = GetVisibleInteriorTrees(trees, height, width) + GetExteriorTreeCount(trees);
             Console.WriteLine(count);
         }
 
-        private static int GetExteriorTreeCount(List<List<int>> trees)
+        private static int GetExteriorTreeCount(int[][] trees)
         {
-            return 2 * trees.Count() + (2 * (trees.First().Count() - 2));
+            return 2 * trees.Length + (2 * (trees[0].Length - 2));
         }
 
-        private static int GetVisibleInteriorTrees(List<List<int>> trees, int height, int width)
+        private static int GetVisibleInteriorTrees(int[][] trees, int height, int width)
         {
             var count = 0;
-            for (var i = 1; i < height - 1; i++)
+            for (var verticalIndex = 1; verticalIndex < height - 1; verticalIndex++)
             {
-                for (var j = 1; j < width - 1; j++)
+                for (var horizontalIndex = 1; horizontalIndex < width - 1; horizontalIndex++)
                 {
-                    var treeHeight = trees[i][j];
-                    var (leftTrees, rightTrees) = GetHorizontalTrees(trees, i, j);
-                    var (aboveTrees, belowTrees) = GetVerticalTrees(trees, i, j);
+                    var treeHeight = trees[verticalIndex][horizontalIndex];
+
+                    var leftTrees = trees[verticalIndex][0..horizontalIndex];
+                    var rightTrees = trees[verticalIndex][(horizontalIndex + 1)..trees[verticalIndex].Length];
+                    var aboveTrees = trees[0..verticalIndex].Select(x => x[horizontalIndex]);
+                    var belowTrees = trees[(verticalIndex + 1)..trees.Length].Select(x => x[horizontalIndex]);
 
                     if (leftTrees.All(t => t < treeHeight) ||
                         rightTrees.All(t => t < treeHeight) ||
@@ -40,46 +42,6 @@
             }
 
             return count;
-        }
-
-        private static (IEnumerable<int> leftTrees, IEnumerable<int> rightTrees) GetHorizontalTrees(List<List<int>> trees, int horizontalIndex, int verticalIndex)
-        {
-            var leftTrees = new List<int>();
-            var rightTrees = new List<int>();
-
-            // Get left trees
-            for (var i = 0; i < horizontalIndex; i++)
-            {
-                leftTrees.Add(trees[verticalIndex][i]);
-            }
-
-            // Get right trees
-            for (var i = horizontalIndex + 1; i < trees[verticalIndex].Count(); i++)
-            {
-                rightTrees.Add(trees[verticalIndex][i]);
-            }
-
-            return (leftTrees, rightTrees);
-        }
-
-        private static (IEnumerable<int> aboveTrees, IEnumerable<int> belowTrees) GetVerticalTrees(List<List<int>> trees, int horizontalIndex, int verticalIndex)
-        {
-            var aboveTrees = new List<int>();
-            var belowTrees = new List<int>();
-
-            // Get above trees
-            for (var i = 0; i < verticalIndex; i++)
-            {
-                aboveTrees.Add(trees[i][horizontalIndex]);
-            }
-
-            // Get below trees
-            for (var i = verticalIndex + 1; i < trees.Count(); i++)
-            {
-                belowTrees.Add(trees[i][horizontalIndex]);
-            }
-
-            return (aboveTrees, belowTrees);
         }
     }
 }
