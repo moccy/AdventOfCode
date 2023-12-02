@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using AdventOfCode2022;
+using Utils;
 
 namespace Day5
 {
@@ -13,7 +13,7 @@ namespace Day5
             var lines = File.ReadAllLines("input.txt");
             var initialCrates = lines.TakeWhile(x => x != string.Empty).ToList();
             var instructions = lines.SkipWhile(x => x != string.Empty).Skip(1).ToList();
-            var transposedCrates = Utils.Transpose(initialCrates.SkipLast(1).Reverse())
+            var transposedCrates = MatrixUtils.Transpose(initialCrates.SkipLast(1).Reverse())
                                         .Where(x => !"[]".Contains(x.First()));
 
             var stackedCrates = transposedCrates.Select(x => new Stack<char>(x.Where(c => char.IsLetter(c))))

@@ -1,6 +1,6 @@
-﻿namespace AdventOfCode2022
+﻿namespace Utils
 {
-    public static class Utils
+    public static class MatrixUtils
     {
         public static IEnumerable<IEnumerable<T>> Transpose<T>(IEnumerable<IEnumerable<T>> matrix) {
             var enumerators = matrix.Select(e => e.GetEnumerator()).ToArray();
