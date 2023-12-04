@@ -5,18 +5,36 @@ internal class Program
     private static void Main(string[] args)
     {
         var lines = File.ReadAllLines("input.txt");
-
         var grid = new SquareGrid<char>(lines.Select(x => x.ToCharArray()).ToArray());
+        var symbolDictionary = CreateSymbolDictionary(grid);
+        Console.WriteLine($"Part 1: {SolvePart1(symbolDictionary)}");
+        Console.WriteLine($"Part 2: {SolvePart2(symbolDictionary)}");
+    }
 
-        var symbolTiles = grid.Tiles
-            .Where(x => !char.IsDigit(x.Contents) && x.Contents != '.');
+    private static int SolvePart1(Dictionary<Tile<char>, List<int>> symbolDictionary)
+    {
+        return symbolDictionary.Values.SelectMany(x => x).Sum();
+    }
 
-        var partNumbers = new List<int>();
+    private static int SolvePart2(Dictionary<Tile<char>, List<int>> symbolDictionary)
+    {
+        return symbolDictionary
+            .Where(x => x.Key.Contents == '*')
+            .Where(x => x.Value.Count == 2)
+            .Select(x => x.Value[0] * x.Value[1])
+            .Sum();
+    }
 
-        foreach (var tile in symbolTiles)
+    private static Dictionary<Tile<char>, List<int>> CreateSymbolDictionary(SquareGrid<char> grid)
+    {
+        var symbolDictionary = grid.Tiles
+            .Where(x => !char.IsDigit(x.Contents) && x.Contents != '.')
+            .ToDictionary(symbolTile => symbolTile, _ => new List<int>());
+
+        foreach (var symbolTile in symbolDictionary.Keys)
         {
             var partNumberNeighbours =
-                grid.GetNeighbours(tile, includeDiagonal: true)
+                grid.GetNeighbours(symbolTile, includeDiagonal: true)
                     .Where(x => char.IsDigit(x.Contents));
 
             var checkedTiles = new HashSet<Tile<char>>();
@@ -34,10 +52,10 @@ internal class Program
                     checkedTiles.Add(relative);
                 }
                 var number = int.Parse(new string(relatives.Select(x => x.Contents).ToArray()));
-                partNumbers.Add(number);
+                symbolDictionary[symbolTile].Add(number);
             }
         }
-        
-        Console.WriteLine($"Sum: {partNumbers.Sum()}");
+
+        return symbolDictionary;
     }
 }
