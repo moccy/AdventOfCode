@@ -1,20 +1,13 @@
 namespace Y2023D04;
 
 public class Solver
-{
-    private Card[] _cards;
-    private Dictionary<int, int> _cardMatchCounts;
-    
-    public Solver(string[] lines)
-    { 
-        _cards = lines.Select(line => new Card(line)).ToArray();
-        _cardMatchCounts = _cards.ToDictionary(x => x.Id, x => x.ActualNumbers.Intersect(x.WinningNumbers).Count());
-    }
-    
-    public int SolvePart1()
+{ 
+    public static int SolvePart1(string[] lines)
     {
+        var cards = lines.Select(line => new Card(line)).ToArray();
+
         var dict = new Dictionary<Card, IEnumerable<int>>();
-        foreach (var card in _cards)
+        foreach (var card in cards)
         {
             var matches = card.ActualNumbers.Intersect(card.WinningNumbers).ToList();
             if (matches.Any())
@@ -26,15 +19,22 @@ public class Solver
         return (int) dict.Values.Sum(x => Math.Pow(2, x.Count() - 1));
     }
     
-    public int SolvePart2()
+    public static int SolvePart2(string[] lines)
     {
-        var cardCounts = new int[_cards.Length];
-        Array.Fill(cardCounts, 1); // Initialize all card counts to 1 (for the original cards)
+        var cards = lines.Select(line => new Card(line)).ToArray();
+        var cardMatchCounts = cards
+            .ToDictionary(
+                x => x.Id,
+                x => x.ActualNumbers.Intersect(x.WinningNumbers).Count()
+            );
 
-        for (int i = 0; i < _cards.Length; i++)
+        var cardCounts = new int[cards.Length];
+        Array.Fill(cardCounts, 1);
+
+        for (int i = 0; i < cards.Length; i++)
         {
-            int matchCount = _cardMatchCounts[_cards[i].Id];
-            for (int j = 1; j <= matchCount && i + j < _cards.Length; j++)
+            int matchCount = cardMatchCounts[cards[i].Id];
+            for (int j = 1; j <= matchCount && i + j < cards.Length; j++)
             {
                 cardCounts[i + j] += cardCounts[i];
             }
