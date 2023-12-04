@@ -28,36 +28,18 @@ public class Solver
     
     public int SolvePart2()
     {
-        var cardCounts = _cards.ToDictionary(x => x.Id, _ => 0);
-        FindAndAddNextCards(_cards, cardCounts, _cards, _cardMatchCounts);
-        return cardCounts.Values.Sum();
-    }
+        var cardCounts = new int[_cards.Length];
+        Array.Fill(cardCounts, 1); // Initialize all card counts to 1 (for the original cards)
 
-    private void FindAndAddNextCards(IEnumerable<Card> cards, IDictionary<int, int> cardCounts, Card[] allCards, IReadOnlyDictionary<int, int> cardMatches)
-    {
-        foreach (var card in cards)
+        for (int i = 0; i < _cards.Length; i++)
         {
-            var matchCount = cardMatches[card.Id];
-            cardCounts[card.Id]++;
-            var nextCards = allCards.Where(x => x.Id > card.Id && x.Id <= card.Id + matchCount);
-            FindAndAddNextCards(nextCards.ToList(), cardCounts, allCards, cardMatches);
+            int matchCount = _cardMatchCounts[_cards[i].Id];
+            for (int j = 1; j <= matchCount && i + j < _cards.Length; j++)
+            {
+                cardCounts[i + j] += cardCounts[i];
+            }
         }
-    }
-}
 
-public class Card
-{
-    public int Id { get; }
-    public IEnumerable<int> WinningNumbers { get; }
-    
-    public IEnumerable<int> ActualNumbers { get; }
-
-    public Card(string line)
-    {
-        var firstSplit = line.Split(": ");
-        Id = int.Parse(firstSplit[0].Split(' ').Last());
-        var secondSplit = firstSplit[1].Split(" | ");
-        WinningNumbers = secondSplit[0].Split(" ").Where(x => !string.IsNullOrWhiteSpace(x)).Select(int.Parse);
-        ActualNumbers = secondSplit[1].Split(" ").Where(x => !string.IsNullOrWhiteSpace(x)).Select(int.Parse);
+        return cardCounts.Sum();
     }
 }
