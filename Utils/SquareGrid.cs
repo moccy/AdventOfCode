@@ -23,7 +23,7 @@ public class SquareGrid<T> where T: IEquatable<T>
 
             for (var j = 0; j < tileContents[i].Length; j++)
             {
-                Tiles[(tileContents.Count * i) + j] = new Tile<T>
+                Tiles[(i * _rowLength) + j] = new Tile<T>
                 {
                     Contents = tileContents[i][j],
                     Y = i,
